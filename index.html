@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jedi Academy - Domine o Mercado Financeiro</title>
+    <title>Jedi academy - Domine o Mercado Financeiro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
@@ -204,6 +204,7 @@
             text-transform: uppercase;
         }
 
+        /* CORREÇÃO AQUI - Removido o background-clip problemático */
         .gradient-text {
             background: linear-gradient(135deg, var(--jedi-blue), #3b82f6);
             -webkit-background-clip: text;
@@ -350,14 +351,17 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
-            border: 2px solid var(--force-gold);
         }
 
-        .solution-image img {
+        .solution-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            border-radius: 6px;
+            background: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') center/cover;
+            opacity: 0.2;
         }
 
         .solution-stats {
@@ -628,7 +632,7 @@
     <!-- Problem Section -->
     <section class="problem" id="problem">
         <div class="container">
-            <h2 class="section-title star-wars-font">O LADO <span class="red-text">SONBRIO</span> DO MERCADO</h2>
+            <h2 class="section-title star-wars-font">O LADO <span class="red-text">JEDI</span> DO MERCADO</h2>
             <div class="problem-grid">
                 <div class="problem-card">
                     <i class="fas fa-skull-crossbones problem-icon"></i>
@@ -667,7 +671,7 @@
                     </ul>
                 </div>
                 <div class="solution-image">
-                    <img src="https://i.imgur.com/jcY5CfI.jpeg" alt="Gráfico Jedi Academy - Resultados Comprovados">
+                    <i class="fas fa-chart-bar" style="font-size: 100px; color: white; z-index: 1;"></i>
                 </div>
             </div>
             <div class="solution-stats">
@@ -676,7 +680,7 @@
                     <div class="stat-text">de assertividade nas operações</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-number">15P</div>
+                    <div class="stat-number">15P </div>
                     <div class="stat-text">Media de pontos no dolar</div>
                 </div>
                 <div class="stat">
@@ -840,4 +844,8 @@
         });
     </script>
 </body>
+
 </html>
+
+
+
