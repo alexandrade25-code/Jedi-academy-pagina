@@ -714,18 +714,33 @@
             color: var(--neon-cyan);
         }
         
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
         .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
             background: transparent;
             color: var(--neon-cyan);
             border: 1px solid var(--neon-cyan);
             border-radius: 0; /* Quadrado */
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            clip-path: polygon(0 0, 100% 0, 100% 80%, 80% 100%, 0 100%);
         }
         
         .social-links a:hover {
             background: var(--neon-cyan);
             color: black;
             box-shadow: 0 0 15px var(--neon-cyan);
-            transform: translateY(-5px) rotate(45deg);
+            transform: translateY(-5px);
+            clip-path: polygon(20% 0, 100% 20%, 80% 100%, 0 80%);
         }
         
         .footer-heading {
@@ -758,7 +773,7 @@
             text-align: center;
         }
 
-        .footer-links a {
+        .footer-links a, .footer-links span {
             color: #cbd5e1;
             text-decoration: none;
             transition: all 0.3s;
@@ -782,10 +797,30 @@
         
         /* Tela de Carregamento - Cyber Data */
         .loading-screen {
-            background: black;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--cyber-black);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+            opacity: 1;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
         
         .loading-logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
             filter: drop-shadow(0 0 20px var(--neon-cyan));
         }
         
@@ -793,19 +828,31 @@
             color: var(--neon-cyan);
             text-shadow: 0 0 10px var(--neon-cyan);
             animation: blink 0.5s infinite;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
         }
         
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         
         .progress-bar {
+            width: 80%;
+            max-width: 400px;
+            height: 5px;
             background: #333;
             border: 1px solid var(--neon-cyan);
             border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
         }
         
         .progress {
+            height: 100%;
+            width: 0%;
             background: var(--neon-cyan);
             box-shadow: 0 0 20px var(--neon-cyan);
+            transition: width 0.2s linear;
         }
         
         /* Media Queries */
@@ -814,13 +861,21 @@
                 grid-template-columns: 1fr 1fr; /* 2 colunas em tablets */
             }
             .footer-about { grid-column: span 2; } /* Sobre ocupa largura total */
+            .solution-content { gap: 30px; }
+            .solution-image { height: 400px; }
+            .hero-title { font-size: 3.2rem; }
         }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .hero-title { font-size: 2.5rem; }
+            .hero-title { font-size: 2.2rem; }
+            .hero-subtitle { font-size: 1.2rem; text-align: center; border-left: none; padding-left: 0; }
+            .hero-content div { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+            .hero-cta { width: 100%; max-width: 300px; }
             .solution-content { grid-template-columns: 1fr; }
             .solution-image { clip-path: none; border: 2px solid var(--neon-cyan); }
+            .solution-stats { grid-template-columns: 1fr; }
+            .section-title { font-size: 2rem; }
             .price { font-size: 2.5rem; }
             .footer-content { grid-template-columns: 1fr; } /* 1 coluna em mobile */
             .footer-about { grid-column: span 1; }
@@ -829,7 +884,8 @@
 </head>
 <body>
     <div class="loading-screen" id="loadingScreen">
-        <img src="https://i.imgur.com/ukWKooQ.png" alt="Jedi Academy" class="loading-logo" onerror="this.style.display='none'">
+        <!-- CORREÇÃO: Adicionando width e height para reservar espaço (80x80px) -->
+        <img src="https://i.imgur.com/ukWKooQ.png" alt="Jedi Academy" class="loading-logo" onerror="this.style.display='none'" width="80" height="80">
         <div class="loading-text">CARREGANDO DADOS...</div>
         <div class="progress-bar"><div class="progress" id="loadingProgress"></div></div>
     </div>
@@ -837,8 +893,9 @@
     <nav id="navbar">
         <div class="container nav-container">
             <div class="logo">
-                <img src="https://i.imgur.com/ukWKooQ.png" alt="Jedi Academy" class="logo-icon" onerror="this.style.display='none'">
-                <div class="logo-text">JEDI <span>ACADEMY</span></div>
+                <!-- CORREÇÃO: Adicionando width e height para reservar espaço (32x32px) -->
+                <img src="https://i.imgur.com/ukWKooQ.png" alt="Jedi Academy Logo" class="logo-icon" onerror="this.style.display='none'" width="32" height="32">
+                <div class="logo-text star-wars-font">JEDI <span>ACADEMY</span></div>
             </div>
             <div class="nav-links">
                 <a href="#problem">O Problema</a>
@@ -851,11 +908,12 @@
     </nav>
 
     <section class="hero">
+        <!-- Parallax Star Background -->
         <div class="stars" id="stars"></div>
         <div class="container hero-content">
-            <div class="hero-badge">TREINAMENTO AVANÇADO</div>
+            <div class="hero-badge star-wars-font">TREINAMENTO AVANÇADO</div>
             <h1 class="hero-title star-wars-font">DOMINE A FORÇA DO <span class="gradient-text">MERCADO FINANCEIRO</span></h1>
-            <p class="hero-subtitle">Aprenda a operar Dólar e Índice na B3 com a estratégia de um Mestre Jedi. Transforme-se de Padawan Para um JEDI dos investimentos.</p>
+            <p class="hero-subtitle">Aprenda a operar **Dólar e Índice** na B3 com a estratégia de um Mestre Jedi. Transforme-se de Padawan Para um **JEDI dos investimentos**.</p>
             <div>
                 <a href="https://t.me/Alex_Andrade_JEDI" class="hero-cta" target="_blank">Iniciar Jornada</a>
                 <a href="#solution" class="hero-cta secondary">Saber Mais</a>
@@ -892,10 +950,10 @@
             <div class="solution-content">
                 <div class="solution-text">
                     <h3>Domine o Mercado com a Precisão de um Mestre Jedi</h3>
-                    <p>Nosso treinamento foi desenvolvido para transformar traders iniciantes em mestres do mercado financeiro, com foco em Dólar e Índice B3.</p>
+                    <p>Nosso treinamento foi desenvolvido para transformar traders iniciantes em mestres do mercado financeiro, com foco em **Dólar e Índice B3**.</p>
                     <ul class="solution-list">
-                        <li><i class="fas fa-check"></i> Estratégias baseadas volatilidade e fluxo institucional</li>
-                        <li><i class="fas fa-check"></i> Planilhas de análise quantitativa exclusivas e Vitalicias</li>
+                        <li><i class="fas fa-check"></i> Estratégias baseadas **volatilidade e fluxo institucional**</li>
+                        <li><i class="fas fa-check"></i> Planilhas de **análise quantitativa** exclusivas e Vitalicias</li>
                         <li><i class="fas fa-check"></i> Aulas Gravadas e ao vivo</li>
                         <li><i class="fas fa-check"></i> Sala ao vivo durante o pregão</li>
                         <li><i class="fas fa-check"></i> Indicadores exclusivos</li>
@@ -903,7 +961,7 @@
                     </ul>
                 </div>
                 <div class="solution-image">
-                    <img src="https://i.imgur.com/9DGHwmh.jpeg" alt="Gráfico Jedi Academy - Resultados Comprovados" onerror="this.src='https://placehold.co/600x400?text=Grafico+Exemplo'">
+                    <img src="https://i.imgur.com/9DGHwmh.jpeg" alt="Gráfico Jedi Academy - Resultados Comprovados" onerror="this.src='https://placehold.co/600x400/000000/00f3ff?text=Grafico+Exemplo'">
                 </div>
             </div>
             <div class="solution-stats">
@@ -952,9 +1010,10 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-about">
-                    <div class="footer-logo">
-                        <img src="https://i.imgur.com/ukWKooQ.png" alt="Jedi Academy" class="footer-logo-icon" onerror="this.style.display='none'">
-                        <div class="footer-logo-text">JEDI <span>ACADEMY</span></div>
+                    <div class="logo">
+                        <!-- CORREÇÃO: Adicionando width e height para reservar espaço (40x40px) -->
+                        <img src="https://i.imgur.com/ukWKooQ.png" alt="Jedi Academy Logo" class="footer-logo-icon" onerror="this.style.display='none'" width="40" height="40">
+                        <div class="footer-logo-text star-wars-font">JEDI <span>ACADEMY</span></div>
                     </div>
                     <p class="footer-description">Treinamento avançado para traders que desejam dominar o mercado de Dólar e Índice com a estratégia de um Mestre Jedi.</p>
                     <div class="social-links">
@@ -1005,13 +1064,16 @@
             let progress = 0;
             
             const loadingInterval = setInterval(() => {
+                // Simulate loading progress with randomized steps
                 progress += Math.random() * 15;
                 if(progress >= 100) {
                     progress = 100;
                     clearInterval(loadingInterval);
                     setTimeout(() => {
+                        // Fade out the loading screen
                         loadingScreen.classList.add('hidden');
                         setTimeout(() => {
+                            // Finally remove it from display
                             loadingScreen.style.display = 'none';
                         }, 500);
                     }, 500);
@@ -1019,13 +1081,14 @@
                 loadingProgress.style.width = progress + '%';
             }, 200);
 
-            // Star Background
+            // Star Background initialization
             createStars();
         });
         
         function createStars() {
             const starsContainer = document.getElementById('stars');
-            const starsCount = 200;
+            // Reduce star count slightly for performance on all devices
+            const starsCount = 150; 
             
             for(let i = 0; i < starsCount; i++) {
                 const star = document.createElement('div');
@@ -1035,9 +1098,11 @@
                 star.style.width = `${size}px`;
                 star.style.height = `${size}px`;
                 
+                // Set random position
                 star.style.left = `${Math.random() * 100}%`;
                 star.style.top = `${Math.random() * 100}%`;
                 
+                // Set random animation timing
                 star.style.animationDelay = `${Math.random() * 5}s`;
                 star.style.animationDuration = `${3 + Math.random() * 4}s`;
                 
@@ -1064,6 +1129,7 @@
                 
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
+                    // Offset by navbar height (80px is a safe guess based on padding)
                     window.scrollTo({
                         top: targetElement.offsetTop - 80,
                         behavior: 'smooth'
@@ -1077,7 +1143,8 @@
             const scrolled = window.pageYOffset;
             const stars = document.getElementById('stars');
             if(stars) {
-                stars.style.transform = `translateY(${scrolled * 0.5}px)`;
+                // Slower movement than scroll (0.5)
+                stars.style.transform = `translateY(${scrolled * 0.5}px)`; 
             }
         });
     </script>
